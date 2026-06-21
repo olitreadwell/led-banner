@@ -78,6 +78,7 @@ body {
 #banner {
   white-space: nowrap;
   font-size: max(20vw, 62vh);
+  font-family: var(--banner-font, system-ui, -apple-system, sans-serif);
   font-weight: 900;
   line-height: 1;
   color: var(--fg);

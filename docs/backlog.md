@@ -27,7 +27,7 @@ use it as a REFERENCE to port features into clean modules, never copy wholesale.
 ## Feature backlog — port from scratchpad reference (priority order)
 Reference: `~/code/scratchpad/public/led/index.html`. Build each as a web
 component where it fits; keep the iPhone-SE one-screen constraint in mind.
-- [ ] Multiple fonts (system stacks: condensed / serif / mono) + bold — M
+- [x] Multiple fonts (Block / Narrow / Serif / Mono system stacks) — M
 - [ ] Text size control (segmented S/M/L scale on the scroll font) — S
 - [ ] Brightness / dimmer (CSS filter on stage; stepper or segmented) — S
 - [ ] Rainbow text / background / both (CSS-attribute-driven cycle) — M
