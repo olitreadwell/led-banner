@@ -207,6 +207,9 @@ class LedStepper extends HTMLElement {
     this.shadowRoot
       .querySelector('.inc')
       .addEventListener('click', () => this.#bump(this.#step));
+    // Name the whole control for assistive tech (e.g. "Speed, group").
+    this.setAttribute('role', 'group');
+    this.setAttribute('aria-label', this.#label);
     this.#sync();
   }
   #bump(delta) {
@@ -222,8 +225,12 @@ class LedStepper extends HTMLElement {
     if (!this.shadowRoot) return;
     const val = this.shadowRoot.querySelector('.val');
     const isZero = this.#value === 0 && this.#zeroLabel;
-    val.textContent = isZero ? this.#zeroLabel : String(this.#value);
+    const display = isZero ? this.#zeroLabel : String(this.#value);
+    val.textContent = display;
     val.dataset.zero = String(Boolean(isZero));
+    // The live region announces the change with its control's name for context,
+    // e.g. "Speed: Static" / "Blink: 5", rather than a bare number.
+    val.setAttribute('aria-label', `${this.#label}: ${display}`);
     this.shadowRoot.querySelector('.dec').disabled = this.#value <= this.#min;
     this.shadowRoot.querySelector('.inc').disabled = this.#value >= this.#max;
   }

@@ -22,8 +22,6 @@ body {
     system-ui,
     -apple-system,
     sans-serif;
-  -webkit-user-select: none;
-  user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -41,6 +39,8 @@ body {
   overflow: hidden;
   touch-action: manipulation; /* no accidental double-tap zoom on the banner */
   filter: brightness(var(--brightness, 1)); /* visual dimmer (the display only) */
+  -webkit-user-select: none; /* no selection on the display; panel text stays selectable */
+  user-select: none;
 }
 
 /* "Tap to edit" affordance shown briefly when entering display mode, so the

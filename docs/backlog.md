@@ -43,9 +43,9 @@ component where it fits; keep the iPhone-SE one-screen constraint in mind.
       font/scroll; feature-detected, disables on iOS Safari) — L
 
 ## Audit follow-ups (fold into whichever change touches the area)
-- [ ] `aria-valuetext` / better SR announcements on the stepper value — P1
+- [x] Better SR announcements on the stepper (group role + contextual aria-label) — P1
 - [ ] Pause/Play affordance for scroll/bounce (WCAG 2.2.2) — P2
-- [ ] Scope `user-select:none` to stage/banner only (allow selecting panel text) — P2
+- [x] Scope `user-select:none` to the stage only (panel text selectable) — P2
 
 ## Loop hygiene
 - Bump the SW `CACHE` version on EVERY asset change and add new files to its
