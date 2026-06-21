@@ -39,7 +39,8 @@ component where it fits; keep the iPhone-SE one-screen constraint in mind.
 - [x] Auto-fullscreen on rotate-to-landscape + portrait-display toggle
       ("Rotate" switch; landscape=display, portrait=edit; ctx.enterDisplay/Edit)
 - [x] Dot-matrix LED render (mask-overlay variant: em-sized radial-gradient mask) — M
-- [ ] Export banner as video (canvas + MediaRecorder) — L
+- [x] Export banner as video (offscreen canvas + MediaRecorder; text/colour/
+      font/scroll; feature-detected, disables on iOS Safari) — L
 
 ## Audit follow-ups (fold into whichever change touches the area)
 - [ ] `aria-valuetext` / better SR announcements on the stepper value — P1

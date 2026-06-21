@@ -467,6 +467,32 @@ input[type='color'] {
   outline-offset: 2px;
 }
 
+/* Full-width secondary action (export video) in the Saved tab. */
+.export-btn {
+  width: 100%;
+  margin-top: 0.2rem;
+  padding: 0.6rem;
+  border: 2px solid #333;
+  border-radius: 0.5rem;
+  background: #1c1c1c;
+  color: #fff;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+}
+
+.export-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.export-btn:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
 .warn {
   text-align: center;
   color: #ffd24a;
