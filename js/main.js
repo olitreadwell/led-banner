@@ -63,12 +63,15 @@ const ctx = {
   banner,
   panel,
   $,
-  // Append a control to a tab's panel ('style' | 'motion' | 'fx').
+  // Append a control to a tab's panel ('style' | 'motion' | 'fx' | 'saved').
   add(el, tab = 'style') {
     document.querySelector(`.tab-panel[data-tab="${tab}"]`).appendChild(el);
     return el;
   },
   requestApply: () => applyAll(),
+  // Whole-settings read/restore, for features like saved slots.
+  readAll: () => readControls(),
+  applySaved: (obj) => applySaved(obj),
 };
 
 function baseSettings() {
@@ -162,6 +165,18 @@ function load() {
     if (raw) return JSON.parse(raw);
   } catch {}
   return null;
+}
+
+// Push a full settings object into every control and re-render. Used on init
+// and by the saved-slots feature.
+function applySaved(obj) {
+  if (!obj) return;
+  if (obj.text != null) $('text').value = obj.text;
+  if (obj.fg != null) $('fg').value = obj.fg;
+  if (obj.bg != null) $('bg').value = obj.bg;
+  if (obj.speed != null) speedStepper.value = obj.speed;
+  for (const f of features) f.restore?.(obj);
+  applyAll();
 }
 
 // --- Wake Lock: keep the screen awake in display mode, degrade silently. ---
@@ -288,14 +303,8 @@ tabButtons.forEach((t) => {
 
 // Init from saved settings (falling back to the markup defaults).
 const saved = load();
-if (saved) {
-  if (saved.text != null) $('text').value = saved.text;
-  if (saved.fg != null) $('fg').value = saved.fg;
-  if (saved.bg != null) $('bg').value = saved.bg;
-  if (saved.speed != null) speedStepper.value = saved.speed;
-  for (const f of features) f.restore?.(saved);
-}
-applyAll();
+if (saved) applySaved(saved);
+else applyAll();
 
 // Register the service worker for offline use.
 if ('serviceWorker' in navigator) {

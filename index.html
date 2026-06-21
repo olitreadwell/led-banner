@@ -94,6 +94,17 @@
           >
             Effects
           </button>
+          <button
+            type="button"
+            role="tab"
+            id="tab-saved"
+            data-tab="saved"
+            aria-controls="panel-saved"
+            aria-selected="false"
+            tabindex="-1"
+          >
+            Saved
+          </button>
         </div>
 
         <!-- Style tab — colour is here; font + size are appended by features. -->
@@ -140,6 +151,16 @@
           data-tab="fx"
           role="tabpanel"
           aria-labelledby="tab-fx"
+          hidden
+        ></div>
+
+        <!-- Saved slots appended here by the script. -->
+        <div
+          class="tab-panel"
+          id="panel-saved"
+          data-tab="saved"
+          role="tabpanel"
+          aria-labelledby="tab-saved"
           hidden
         ></div>
 

@@ -34,8 +34,8 @@ component where it fits; keep the iPhone-SE one-screen constraint in mind.
 - [x] Brightness / dimmer (segmented Low/Med/High/Max; CSS filter on stage) — S
 - [x] Rainbow text / background / both (@property --hue cycle, reduced-motion safe) — M
 - [x] Vertical scroll direction (Right/Left/Up/Down with arrow icons) — M
-- [ ] Saved slots (save/recall full settings; own storage key) — M, needs a
-      core readAll/applySaved hook
+- [x] Saved slots (3 slots in a Saved tab; save/recall full settings; core
+      readAll/applySaved hook added)
 - [ ] Auto-fullscreen on rotate-to-landscape + portrait-display toggle — S,
       core hook (expose enterDisplay/enterEdit on ctx)
 - [ ] Dot-matrix LED render (mask-overlay variant first) — L

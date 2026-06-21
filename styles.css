@@ -400,6 +400,61 @@ input[type='color'] {
 /* The segmented, stepper and switch controls are native web components
    (js/components.js) that style themselves in their shadow roots. */
 
+/* Saved slots: a Load button (the saved message, or "Empty") + a Save button. */
+.slots {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.slot {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.slot-load {
+  flex: 1;
+  min-width: 0;
+  padding: 0.5rem 0.7rem;
+  border: 2px solid #333;
+  border-radius: 0.5rem;
+  background: #111;
+  color: #fff;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.slot-load.empty {
+  color: #666;
+  font-weight: 600;
+  cursor: default;
+}
+
+.slot-save {
+  flex: 0 0 auto;
+  padding: 0.5rem 0.9rem;
+  border: 2px solid #333;
+  border-radius: 0.5rem;
+  background: #1c1c1c;
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.slot-load:focus-visible,
+.slot-save:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
 .warn {
   text-align: center;
   color: #ffd24a;

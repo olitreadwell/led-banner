@@ -11,6 +11,7 @@ import brightness from './brightness.js';
 import blink from './blink.js';
 import direction from './direction.js';
 import mirror from './mirror.js';
+import slots from './slots.js';
 
 export const features = [
   motion,
@@ -22,4 +23,5 @@ export const features = [
   blink,
   direction,
   mirror,
+  slots,
 ];
