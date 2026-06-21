@@ -20,6 +20,8 @@ use it as a REFERENCE to port features into clean modules, never copy wholesale.
 - [x] Static + Scroll + Bounce motion; Static is speed 0 (auto-fit to screen)
 - [x] Speed + Blink as steppers; Glow/Motion/Direction as segmented controls
 - [x] Native web-component panel; every option fits an iPhone SE (no scroll)
+- [x] Tabbed panel (Style / Motion / Effects) — message + GO always visible,
+      one control group at a time; panel ~295px and scales to any feature count
 - [x] Colour presets — REMOVED by request (steppers/segmented replaced them)
 - [x] a11y/safety: zoom re-enabled, stage keyboard button + fading hint,
       focus-visible, empty-text GO guard, low-contrast warning

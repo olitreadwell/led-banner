@@ -9,7 +9,6 @@ import { features } from './features/index.js';
 const root = document.documentElement;
 const stage = document.getElementById('stage');
 const panel = document.getElementById('panel');
-const panelGrid = document.getElementById('panel-grid');
 const banner = document.getElementById('banner');
 const displayHint = document.getElementById('display-hint');
 const goButton = document.getElementById('go');
@@ -63,10 +62,10 @@ const ctx = {
   stage,
   banner,
   panel,
-  panelGrid,
   $,
-  add(el) {
-    panelGrid.appendChild(el);
+  // Append a control to a tab's panel ('style' | 'motion' | 'fx').
+  add(el, tab = 'style') {
+    document.querySelector(`.tab-panel[data-tab="${tab}"]`).appendChild(el);
     return el;
   },
   requestApply: () => applyAll(),
@@ -258,9 +257,34 @@ stage.addEventListener('keydown', (e) => {
   }
 });
 
-// Insert the speed stepper right after the colour row, then mount features.
-panelGrid.appendChild(speedStepper);
+// Speed leads the Motion tab; then features mount into their tabs.
+ctx.add(speedStepper, 'motion');
 for (const f of features) f.mount?.(ctx);
+
+// --- Tabs: show one group of controls at a time -----------------------------
+const tabButtons = [...document.querySelectorAll('.tabs [role="tab"]')];
+const tabPanels = [...document.querySelectorAll('.tab-panel')];
+function selectTab(name) {
+  for (const t of tabButtons) {
+    const on = t.dataset.tab === name;
+    t.setAttribute('aria-selected', String(on));
+    t.tabIndex = on ? 0 : -1;
+  }
+  for (const p of tabPanels) p.hidden = p.dataset.tab !== name;
+}
+tabButtons.forEach((t) => {
+  t.addEventListener('click', () => selectTab(t.dataset.tab));
+  t.addEventListener('keydown', (e) => {
+    const i = tabButtons.indexOf(t);
+    let j = null;
+    if (e.key === 'ArrowRight') j = (i + 1) % tabButtons.length;
+    else if (e.key === 'ArrowLeft') j = (i - 1 + tabButtons.length) % tabButtons.length;
+    if (j === null) return;
+    e.preventDefault();
+    selectTab(tabButtons[j].dataset.tab);
+    tabButtons[j].focus();
+  });
+});
 
 // Init from saved settings (falling back to the markup defaults).
 const saved = load();

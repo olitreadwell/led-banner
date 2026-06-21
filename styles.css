@@ -222,19 +222,56 @@ body {
     max(0.8rem, env(safe-area-inset-bottom));
 }
 
-/* One control per row in portrait; two columns in landscape. Compact enough
-   that every option fits a small phone (iPhone SE) without scrolling. */
-#panel-grid {
+/* Tabs group the controls so only one set shows at a time — the panel stays
+   short no matter how many options exist. */
+.tabs {
+  display: flex;
+  gap: 0.3rem;
+  margin-top: 0.2rem;
+}
+
+.tabs [role='tab'] {
+  flex: 1;
+  padding: 0.5rem 0.4rem;
+  border: 2px solid #333;
+  border-radius: 0.5rem;
+  background: #111;
+  color: #aaa;
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+
+.tabs [role='tab'][aria-selected='true'] {
+  border-color: var(--fg);
+  background: #1c1c1c;
+  color: #fff;
+}
+
+.tabs [role='tab']:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+.tab-panel {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.45rem;
+  padding-top: 0.2rem;
+}
+
+.tab-panel[hidden] {
+  display: none;
 }
 
 @media (orientation: landscape) {
   .panel-inner {
     max-width: 880px;
   }
-  #panel-grid {
+  .tab-panel {
     grid-template-columns: 1fr 1fr;
     gap: 0.45rem 1.25rem;
   }

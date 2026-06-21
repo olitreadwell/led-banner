@@ -25,7 +25,7 @@ export default {
       blink = e.detail.value;
       ctx.requestApply();
     });
-    ctx.add(el);
+    ctx.add(el, 'fx');
   },
 
   read(s) {

@@ -20,7 +20,7 @@ export default {
       direction = e.detail.value;
       ctx.requestApply();
     });
-    ctx.add(el);
+    ctx.add(el, 'motion');
   },
 
   read(s) {

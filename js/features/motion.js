@@ -19,7 +19,7 @@ export default {
       style = e.detail.value;
       ctx.requestApply();
     });
-    ctx.add(el);
+    ctx.add(el, 'motion');
   },
 
   read(s) {

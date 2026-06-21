@@ -47,20 +47,63 @@
 
     <div id="panel" role="dialog" aria-label="Banner settings">
       <div class="panel-inner">
-        <div id="panel-grid">
-          <div class="row">
-            <label for="text">Text</label>
-            <input
-              id="text"
-              type="text"
-              value="PLAY JUNGLE"
-              autocomplete="off"
-              autocorrect="off"
-              autocapitalize="characters"
-              spellcheck="false"
-            />
-          </div>
+        <!-- The message is always visible; styling controls live under tabs. -->
+        <div class="row">
+          <label for="text">Text</label>
+          <input
+            id="text"
+            type="text"
+            value="PLAY JUNGLE"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="characters"
+            spellcheck="false"
+          />
+        </div>
 
+        <div class="tabs" role="tablist" aria-label="Settings">
+          <button
+            type="button"
+            role="tab"
+            id="tab-style"
+            data-tab="style"
+            aria-controls="panel-style"
+            aria-selected="true"
+          >
+            Style
+          </button>
+          <button
+            type="button"
+            role="tab"
+            id="tab-motion"
+            data-tab="motion"
+            aria-controls="panel-motion"
+            aria-selected="false"
+            tabindex="-1"
+          >
+            Motion
+          </button>
+          <button
+            type="button"
+            role="tab"
+            id="tab-fx"
+            data-tab="fx"
+            aria-controls="panel-fx"
+            aria-selected="false"
+            tabindex="-1"
+          >
+            Effects
+          </button>
+        </div>
+
+        <!-- Style tab — colour is here; font + size are appended by features. -->
+        <div
+          class="tab-panel"
+          id="panel-style"
+          data-tab="style"
+          role="tabpanel"
+          aria-labelledby="tab-style"
+        >
           <div class="row">
             <label for="fg">Colour</label>
             <div class="swatches">
@@ -78,11 +121,27 @@
               />
             </div>
           </div>
-
-          <!-- The speed stepper and feature controls (motion, glow, blink,
-               direction, mirror) are appended here by the script so every
-               option stays visible on one screen. -->
         </div>
+
+        <!-- Speed + motion + direction appended here by the script. -->
+        <div
+          class="tab-panel"
+          id="panel-motion"
+          data-tab="motion"
+          role="tabpanel"
+          aria-labelledby="tab-motion"
+          hidden
+        ></div>
+
+        <!-- Glow + blink + mirror appended here by the script. -->
+        <div
+          class="tab-panel"
+          id="panel-fx"
+          data-tab="fx"
+          role="tabpanel"
+          aria-labelledby="tab-fx"
+          hidden
+        ></div>
 
         <p id="contrast-warn" class="warn" role="status" aria-live="polite" hidden></p>
 

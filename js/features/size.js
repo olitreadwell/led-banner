@@ -24,7 +24,7 @@ export default {
       size = e.detail.value;
       ctx.requestApply();
     });
-    ctx.add(el);
+    ctx.add(el, 'style');
   },
 
   read(s) {
