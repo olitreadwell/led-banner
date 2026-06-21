@@ -40,6 +40,7 @@ body {
   align-items: center;
   overflow: hidden;
   touch-action: manipulation; /* no accidental double-tap zoom on the banner */
+  filter: brightness(var(--brightness, 1)); /* visual dimmer (the display only) */
 }
 
 /* "Tap to edit" affordance shown briefly when entering display mode, so the

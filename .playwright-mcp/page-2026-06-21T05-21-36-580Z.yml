@@ -1,0 +1,41 @@
+- generic [active] [ref=e1]:
+  - 'button "Banner: PLAY JUNGLE. Activate to edit." [ref=e2]':
+    - generic [ref=e3]: PLAY JUNGLE
+    - paragraph: Tap to edit
+  - dialog "Banner settings" [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]: Text
+        - textbox "Text" [ref=e8]: PLAY JUNGLE
+      - tablist "Settings" [ref=e9]:
+        - tab "Style" [selected] [ref=e10] [cursor=pointer]
+        - tab "Motion" [ref=e11] [cursor=pointer]
+        - tab "Effects" [ref=e12] [cursor=pointer]
+      - tabpanel "Style" [ref=e13]:
+        - generic [ref=e14]:
+          - generic [ref=e15]: Colour
+          - generic [ref=e16]:
+            - textbox "Text colour" [ref=e17] [cursor=pointer]: "#39ff14"
+            - textbox "Background colour" [ref=e18] [cursor=pointer]: "#000000"
+        - generic [ref=e20]:
+          - generic [ref=e21]: Font
+          - radiogroup "Font" [ref=e22]:
+            - radio "Block" [checked] [ref=e23] [cursor=pointer]:
+              - generic [ref=e24]: Block
+            - radio "Narrow" [ref=e25] [cursor=pointer]:
+              - generic [ref=e26]: Narrow
+            - radio "Serif" [ref=e27] [cursor=pointer]:
+              - generic [ref=e28]: Serif
+            - radio "Mono" [ref=e29] [cursor=pointer]:
+              - generic [ref=e30]: Mono
+        - generic [ref=e32]:
+          - generic [ref=e33]: Size
+          - radiogroup "Size" [ref=e34]:
+            - radio "S" [ref=e35] [cursor=pointer]:
+              - generic [ref=e36]: S
+            - radio "M" [checked] [ref=e37] [cursor=pointer]:
+              - generic [ref=e38]: M
+            - radio "L" [ref=e39] [cursor=pointer]:
+              - generic [ref=e40]: L
+      - button "GO FULLSCREEN ▶" [ref=e41] [cursor=pointer]
+      - paragraph [ref=e42]: Tap the screen anytime to come back here.

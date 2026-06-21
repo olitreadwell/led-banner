@@ -6,8 +6,18 @@ import motion from './motion.js';
 import font from './font.js';
 import size from './size.js';
 import glow from './glow.js';
+import brightness from './brightness.js';
 import blink from './blink.js';
 import direction from './direction.js';
 import mirror from './mirror.js';
 
-export const features = [motion, font, size, glow, blink, direction, mirror];
+export const features = [
+  motion,
+  font,
+  size,
+  glow,
+  brightness,
+  blink,
+  direction,
+  mirror,
+];
