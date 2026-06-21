@@ -3,6 +3,7 @@
 // js/components.js. Order here is the order controls appear in the panel
 // (after the core text, colour and speed controls).
 import motion from './motion.js';
+import rainbow from './rainbow.js';
 import font from './font.js';
 import size from './size.js';
 import glow from './glow.js';
@@ -13,6 +14,7 @@ import mirror from './mirror.js';
 
 export const features = [
   motion,
+  rainbow,
   font,
   size,
   glow,

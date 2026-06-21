@@ -32,7 +32,7 @@ component where it fits; keep the iPhone-SE one-screen constraint in mind.
 - [x] Multiple fonts (Block / Narrow / Serif / Mono system stacks) — M
 - [x] Text size control (segmented S/M/L scale on the scroll font) — S
 - [x] Brightness / dimmer (segmented Low/Med/High/Max; CSS filter on stage) — S
-- [ ] Rainbow text / background / both (CSS-attribute-driven cycle) — M
+- [x] Rainbow text / background / both (@property --hue cycle, reduced-motion safe) — M
 - [ ] Vertical scroll direction (up/down) — M, core/CSS
 - [ ] Saved slots (save/recall full settings; own storage key) — M, needs a
       core readAll/applySaved hook

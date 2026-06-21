@@ -191,6 +191,41 @@ body {
   }
 }
 
+/* Rainbow colour cycling. One inherited --hue is animated on :root (only while
+   rainbow is active) and the text and/or stage background read from it. */
+@property --hue {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@keyframes hue-cycle {
+  to {
+    --hue: 360;
+  }
+}
+
+:root:has(#banner[data-rainbow]) {
+  animation: hue-cycle 6s linear infinite;
+}
+
+#banner[data-rainbow~='text'] {
+  color: hsl(var(--hue), 100%, 60%);
+  text-shadow:
+    0 0 calc(var(--glow) * 0.12em) hsl(var(--hue), 100%, 60%),
+    0 0 calc(var(--glow) * 0.3em) hsl(var(--hue), 100%, 60%);
+}
+
+#stage:has(#banner[data-rainbow~='bg']) {
+  background: hsl(var(--hue), 100%, 28%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:has(#banner[data-rainbow]) {
+    animation: none;
+  }
+}
+
 /* Edit-mode controls layered over the live banner.
    The panel is a scrolling flex container; the inner block uses margin:auto
    so it centres when it fits but stays fully reachable (scrollable) when it
