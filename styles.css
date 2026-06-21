@@ -69,6 +69,35 @@ body {
   }
 }
 
+/* Direction: reverse the scroll without a second keyframe (set by the
+   direction feature via data-dir). */
+#banner[data-dir='rtl'] {
+  animation-direction: reverse;
+}
+
+/* Blink: compose a hard on/off flash on top of the scroll (set by the blink
+   feature via data-blink; rate driven by --blink-rate). */
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+#banner[data-blink='on'] {
+  animation:
+    scroll var(--duration) linear infinite,
+    blink var(--blink-rate, 0.5s) infinite;
+}
+
+#banner[data-dir='rtl'][data-blink='on'] {
+  animation-direction: reverse, normal;
+}
+
 @media (prefers-reduced-motion: reduce) {
   #banner {
     animation-duration: calc(var(--duration) * 2.5);
