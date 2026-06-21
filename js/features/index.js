@@ -4,9 +4,10 @@
 // (after the core text, colour and speed controls).
 import motion from './motion.js';
 import font from './font.js';
+import size from './size.js';
 import glow from './glow.js';
 import blink from './blink.js';
 import direction from './direction.js';
 import mirror from './mirror.js';
 
-export const features = [motion, font, glow, blink, direction, mirror];
+export const features = [motion, font, size, glow, blink, direction, mirror];

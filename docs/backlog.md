@@ -28,7 +28,7 @@ use it as a REFERENCE to port features into clean modules, never copy wholesale.
 Reference: `~/code/scratchpad/public/led/index.html`. Build each as a web
 component where it fits; keep the iPhone-SE one-screen constraint in mind.
 - [x] Multiple fonts (Block / Narrow / Serif / Mono system stacks) — M
-- [ ] Text size control (segmented S/M/L scale on the scroll font) — S
+- [x] Text size control (segmented S/M/L scale on the scroll font) — S
 - [ ] Brightness / dimmer (CSS filter on stage; stepper or segmented) — S
 - [ ] Rainbow text / background / both (CSS-attribute-driven cycle) — M
 - [ ] Vertical scroll direction (up/down) — M, core/CSS
