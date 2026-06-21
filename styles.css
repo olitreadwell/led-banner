@@ -257,6 +257,18 @@ body {
   );
 }
 
+/* Dot-matrix: mask the text into a grid of round LED dots. The mask tile is
+   sized in em, so the dots scale with the font; the lit colour (solid, glow or
+   rainbow) shows through the dots. */
+#banner[data-dots='on'] {
+  -webkit-mask-image: radial-gradient(circle, #000 38%, transparent 44%);
+  mask-image: radial-gradient(circle, #000 38%, transparent 44%);
+  -webkit-mask-size: 0.15em 0.15em;
+  mask-size: 0.15em 0.15em;
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+}
+
 /* Edit-mode controls layered over the live banner.
    The panel is a scrolling flex container; the inner block uses margin:auto
    so it centres when it fits but stays fully reachable (scrollable) when it

@@ -38,7 +38,7 @@ component where it fits; keep the iPhone-SE one-screen constraint in mind.
       readAll/applySaved hook added)
 - [x] Auto-fullscreen on rotate-to-landscape + portrait-display toggle
       ("Rotate" switch; landscape=display, portrait=edit; ctx.enterDisplay/Edit)
-- [ ] Dot-matrix LED render (mask-overlay variant first) — L
+- [x] Dot-matrix LED render (mask-overlay variant: em-sized radial-gradient mask) — M
 - [ ] Export banner as video (canvas + MediaRecorder) — L
 
 ## Audit follow-ups (fold into whichever change touches the area)
