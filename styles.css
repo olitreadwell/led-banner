@@ -107,6 +107,36 @@ body {
   animation-direction: reverse;
 }
 
+/* Up/Down switch to a vertical scroll (the line travels bottom→top, or the
+   reverse). The text is centred horizontally while it travels. */
+@keyframes scroll-vertical {
+  from {
+    transform: translateY(100vh) scaleX(var(--flip));
+  }
+  to {
+    transform: translateY(-100%) scaleX(var(--flip));
+  }
+}
+
+#banner[data-dir='up'] {
+  animation-name: scroll-vertical;
+}
+
+#banner[data-dir='down'] {
+  animation-name: scroll-vertical;
+  animation-direction: reverse;
+}
+
+#banner[data-dir='up'][data-blink='on'],
+#banner[data-dir='down'][data-blink='on'] {
+  animation-name: scroll-vertical, blink;
+}
+
+#stage:has(#banner[data-dir='up']),
+#stage:has(#banner[data-dir='down']) {
+  justify-content: center;
+}
+
 /* Blink: compose a hard on/off flash on top of the scroll (set by the blink
    feature via data-blink; rate driven by --blink-rate). */
 @keyframes blink {
@@ -191,39 +221,40 @@ body {
   }
 }
 
-/* Rainbow colour cycling. One inherited --hue is animated on :root (only while
-   rainbow is active) and the text and/or stage background read from it. */
-@property --hue {
-  syntax: '<number>';
-  inherits: true;
-  initial-value: 0;
-}
-
-@keyframes hue-cycle {
-  to {
-    --hue: 360;
-  }
-}
-
-:root:has(#banner[data-rainbow]) {
-  animation: hue-cycle 6s linear infinite;
-}
-
+/* Rainbow: a gradient spread ACROSS the text (and/or stage background) so the
+   letters show different hues at once, instead of one colour the whole banner
+   shares. The gradient is fixed to the text, so it scrolls along with it. */
 #banner[data-rainbow~='text'] {
-  color: hsl(var(--hue), 100%, 60%);
-  text-shadow:
-    0 0 calc(var(--glow) * 0.12em) hsl(var(--hue), 100%, 60%),
-    0 0 calc(var(--glow) * 0.3em) hsl(var(--hue), 100%, 60%);
+  background-image: linear-gradient(
+    90deg,
+    #ff2d55,
+    #ff9500,
+    #ffe000,
+    #34ff5b,
+    #00e5ff,
+    #0a84ff,
+    #bf5af2,
+    #ff2d55
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  /* The glow text-shadow (even at 0 blur) would paint a solid colour copy of
+     the text over the gradient — drop it so the gradient shows. */
+  text-shadow: none;
 }
 
 #stage:has(#banner[data-rainbow~='bg']) {
-  background: hsl(var(--hue), 100%, 28%);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :root:has(#banner[data-rainbow]) {
-    animation: none;
-  }
+  background-image: linear-gradient(
+    135deg,
+    #2a0010,
+    #2a1500,
+    #06280f,
+    #002824,
+    #00132a,
+    #160029
+  );
 }
 
 /* Edit-mode controls layered over the live banner.

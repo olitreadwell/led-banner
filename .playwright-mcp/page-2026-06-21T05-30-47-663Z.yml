@@ -1,0 +1,52 @@
+- generic [active] [ref=e1]:
+  - 'button "Banner: PLAY JUNGLE. Activate to edit." [ref=e2]':
+    - generic [ref=e3]: PLAY JUNGLE
+    - paragraph: Tap to edit
+  - dialog "Banner settings" [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]: Text
+        - textbox "Text" [ref=e8]: PLAY JUNGLE
+      - tablist "Settings" [ref=e9]:
+        - tab "Style" [selected] [ref=e10] [cursor=pointer]
+        - tab "Motion" [ref=e11] [cursor=pointer]
+        - tab "Effects" [ref=e12] [cursor=pointer]
+      - tabpanel "Style" [ref=e13]:
+        - generic [ref=e14]:
+          - generic [ref=e15]: Colour
+          - generic [ref=e16]:
+            - textbox "Text colour" [ref=e17] [cursor=pointer]: "#39ff14"
+            - textbox "Background colour" [ref=e18] [cursor=pointer]: "#000000"
+        - generic [ref=e20]:
+          - generic [ref=e21]: Rainbow
+          - radiogroup "Rainbow" [ref=e22]:
+            - radio "Off" [checked] [ref=e23] [cursor=pointer]:
+              - generic [ref=e24]: "Off"
+            - radio "Text" [ref=e25] [cursor=pointer]:
+              - generic [ref=e26]: Text
+            - radio "Bg" [ref=e27] [cursor=pointer]:
+              - generic [ref=e28]: Bg
+            - radio "Both" [ref=e29] [cursor=pointer]:
+              - generic [ref=e30]: Both
+        - generic [ref=e32]:
+          - generic [ref=e33]: Font
+          - radiogroup "Font" [ref=e34]:
+            - radio "Block" [checked] [ref=e35] [cursor=pointer]:
+              - generic [ref=e36]: Block
+            - radio "Narrow" [ref=e37] [cursor=pointer]:
+              - generic [ref=e38]: Narrow
+            - radio "Serif" [ref=e39] [cursor=pointer]:
+              - generic [ref=e40]: Serif
+            - radio "Mono" [ref=e41] [cursor=pointer]:
+              - generic [ref=e42]: Mono
+        - generic [ref=e44]:
+          - generic [ref=e45]: Size
+          - radiogroup "Size" [ref=e46]:
+            - radio "S" [ref=e47] [cursor=pointer]:
+              - generic [ref=e48]: S
+            - radio "M" [checked] [ref=e49] [cursor=pointer]:
+              - generic [ref=e50]: M
+            - radio "L" [ref=e51] [cursor=pointer]:
+              - generic [ref=e52]: L
+      - button "GO FULLSCREEN ▶" [ref=e53] [cursor=pointer]
+      - paragraph [ref=e54]: Tap the screen anytime to come back here.
