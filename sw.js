@@ -1,9 +1,14 @@
 // Service worker for the LED Banner PWA. Scope: /
 // Cache-first so the app loads and runs with no network connection.
-const CACHE = 'led-banner-v1';
+// Bump CACHE on every asset change so returning users get fresh JS/CSS instead
+// of a stale cache-first copy (skipWaiting + clients.claim roll it out at once).
+const CACHE = 'led-banner-v2';
 const ASSETS = [
   '/',
   '/index.html',
+  '/styles.css',
+  '/js/main.js',
+  '/js/features/index.js',
   '/manifest.json',
   '/icon-192.png',
   '/icon-512.png',

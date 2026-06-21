@@ -26,168 +26,7 @@
     <meta name="apple-mobile-web-app-title" content="LED Banner" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
 
-    <style>
-      :root {
-        --fg: #39ff14;
-        --bg: #000000;
-        --duration: 8s; /* lower = faster scroll; driven by the speed slider */
-      }
-
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      html,
-      body {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        background: var(--bg);
-        font-family:
-          system-ui,
-          -apple-system,
-          sans-serif;
-        -webkit-user-select: none;
-        user-select: none;
-        -webkit-tap-highlight-color: transparent;
-      }
-
-      /* Fullscreen stage. 100dvh tracks the dynamic viewport so the background
-         fills the screen even as iOS toolbars show/hide. */
-      #stage {
-        position: fixed;
-        inset: 0;
-        width: 100vw;
-        height: 100vh;
-        height: 100dvh;
-        background: var(--bg);
-        display: flex;
-        align-items: center;
-        overflow: hidden;
-      }
-
-      /* The scrolling text. font-size floors at 20vw and grows to fill height,
-         so it stays readable at arm's length in portrait and landscape. */
-      #banner {
-        white-space: nowrap;
-        font-size: max(20vw, 62vh);
-        font-weight: 900;
-        line-height: 1;
-        color: var(--fg);
-        will-change: transform;
-        padding-inline: 0.2em;
-        animation: scroll var(--duration) linear infinite;
-      }
-
-      @keyframes scroll {
-        from {
-          transform: translateX(100vw);
-        }
-        to {
-          transform: translateX(-100%);
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        #banner {
-          animation-duration: calc(var(--duration) * 2.5);
-        }
-      }
-
-      /* Edit-mode controls layered over the live banner. */
-      #panel {
-        position: fixed;
-        inset: 0;
-        z-index: 10;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 1.1rem;
-        padding: max(1.25rem, env(safe-area-inset-top)) 1.25rem
-          max(1.25rem, env(safe-area-inset-bottom));
-        background: rgba(0, 0, 0, 0.82);
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        overflow-y: auto;
-      }
-
-      #panel[hidden] {
-        display: none;
-      }
-
-      .row {
-        display: flex;
-        flex-direction: column;
-        gap: 0.4rem;
-      }
-
-      label {
-        color: #aaa;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-      }
-
-      input[type='text'] {
-        font-size: 1.4rem;
-        font-weight: 700;
-        padding: 0.7rem 0.9rem;
-        border: 2px solid #333;
-        border-radius: 0.6rem;
-        background: #111;
-        color: #fff;
-      }
-
-      input[type='text']:focus {
-        outline: none;
-        border-color: var(--fg);
-      }
-
-      .colors {
-        display: flex;
-        flex-direction: row;
-        gap: 1.5rem;
-      }
-
-      .colors .row {
-        flex: 1;
-      }
-
-      input[type='color'] {
-        width: 100%;
-        height: 3rem;
-        border: 2px solid #333;
-        border-radius: 0.6rem;
-        background: #111;
-        cursor: pointer;
-      }
-
-      input[type='range'] {
-        width: 100%;
-        accent-color: var(--fg);
-      }
-
-      #go {
-        margin-top: 0.5rem;
-        font-size: 1.3rem;
-        font-weight: 900;
-        letter-spacing: 0.1em;
-        padding: 1rem;
-        border: none;
-        border-radius: 0.6rem;
-        background: var(--fg);
-        color: #000;
-        cursor: pointer;
-      }
-
-      .hint {
-        text-align: center;
-        color: #666;
-        font-size: 0.78rem;
-      }
-    </style>
+    <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
     <!-- Stage is always live; tapping it while in display mode reopens the panel. -->
@@ -195,148 +34,53 @@
       <div id="banner">PLAY JUNGLE</div>
     </div>
 
-    <div id="panel">
-      <div class="row">
-        <label for="text">Banner text</label>
-        <input
-          id="text"
-          type="text"
-          value="PLAY JUNGLE"
-          autocomplete="off"
-          autocorrect="off"
-          autocapitalize="characters"
-          spellcheck="false"
-        />
-      </div>
+    <div id="panel" role="dialog" aria-label="Banner settings">
+      <div class="panel-inner">
+        <div id="panel-grid">
+          <div class="row">
+            <label for="text">Banner text</label>
+            <input
+              id="text"
+              type="text"
+              value="PLAY JUNGLE"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="characters"
+              spellcheck="false"
+            />
+          </div>
 
-      <div class="colors">
-        <div class="row">
-          <label for="fg">Text</label>
-          <input id="fg" type="color" value="#39ff14" />
+          <div class="colors">
+            <div class="row">
+              <label for="fg">Text</label>
+              <input id="fg" type="color" value="#39ff14" />
+            </div>
+            <div class="row">
+              <label for="bg">Background</label>
+              <input id="bg" type="color" value="#000000" />
+            </div>
+          </div>
+
+          <div class="row">
+            <label for="speed">Speed</label>
+            <input
+              id="speed"
+              type="range"
+              min="1"
+              max="10"
+              step="1"
+              value="5"
+            />
+          </div>
+
+          <!-- Feature controls are appended here by js/features/*. -->
         </div>
-        <div class="row">
-          <label for="bg">Background</label>
-          <input id="bg" type="color" value="#000000" />
-        </div>
-      </div>
 
-      <div class="row">
-        <label for="speed">Speed</label>
-        <input id="speed" type="range" min="1" max="10" step="1" value="5" />
+        <button id="go">GO FULLSCREEN ▶</button>
+        <p class="hint">Tap the screen anytime to come back here.</p>
       </div>
-
-      <button id="go">GO FULLSCREEN ▶</button>
-      <p class="hint">Tap the screen anytime to come back here.</p>
     </div>
 
-    <script>
-      const root = document.documentElement;
-      const stage = document.getElementById('stage');
-      const panel = document.getElementById('panel');
-      const banner = document.getElementById('banner');
-      const $ = (id) => document.getElementById(id);
-      const STORE_KEY = 'led-banner-settings';
-
-      // Speed slider (1–10) → animation duration. Higher speed = shorter
-      // duration = faster scroll.
-      const speedToDuration = (s) => `${22 / Number(s)}s`;
-
-      function apply({ text, fg, bg, speed }) {
-        banner.textContent = text || ' ';
-        root.style.setProperty('--fg', fg);
-        root.style.setProperty('--bg', bg);
-        root.style.setProperty('--duration', speedToDuration(speed));
-        // Keep the iOS status bar / theme colour matched to the background.
-        document.querySelector('meta[name="theme-color"]').content = bg;
-      }
-
-      function readControls() {
-        return {
-          text: $('text').value,
-          fg: $('fg').value,
-          bg: $('bg').value,
-          speed: $('speed').value,
-        };
-      }
-
-      function save(settings) {
-        // Safari private mode throws on localStorage; settings still apply for
-        // the session.
-        try {
-          localStorage.setItem(STORE_KEY, JSON.stringify(settings));
-        } catch {}
-      }
-
-      function load() {
-        try {
-          const raw = localStorage.getItem(STORE_KEY);
-          if (raw) return JSON.parse(raw);
-        } catch {}
-        return null;
-      }
-
-      // --- Wake Lock: keep the screen awake in display mode, degrade silently
-      // on browsers without the API. ---
-      let wakeLock = null;
-      async function requestWakeLock() {
-        if (!('wakeLock' in navigator)) return; // unsupported → no-op, no error
-        try {
-          wakeLock = await navigator.wakeLock.request('screen');
-        } catch {
-          // e.g. tab not visible or permission denied — not user-facing.
-        }
-      }
-      async function releaseWakeLock() {
-        try {
-          await wakeLock?.release();
-        } catch {}
-        wakeLock = null;
-      }
-      // The OS drops the lock when the page is hidden; re-acquire on return.
-      document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible' && panel.hidden)
-          requestWakeLock();
-      });
-
-      function enterDisplay() {
-        save(readControls());
-        panel.hidden = true;
-        requestWakeLock();
-      }
-
-      function enterEdit() {
-        panel.hidden = false;
-        releaseWakeLock();
-      }
-
-      // Live updates: every control applies immediately, in either mode.
-      ['text', 'fg', 'bg', 'speed'].forEach((id) =>
-        $(id).addEventListener('input', () => apply(readControls())),
-      );
-
-      $('go').addEventListener('click', enterDisplay);
-      stage.addEventListener('click', () => {
-        if (panel.hidden) enterEdit();
-      });
-
-      // Init from saved settings (falling back to the markup defaults).
-      const saved = load();
-      if (saved) {
-        $('text').value = saved.text ?? $('text').value;
-        $('fg').value = saved.fg ?? $('fg').value;
-        $('bg').value = saved.bg ?? $('bg').value;
-        $('speed').value = saved.speed ?? $('speed').value;
-      }
-      apply(readControls());
-
-      // Register the service worker for offline use.
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker
-            .register('/sw.js', { scope: '/' })
-            .catch(() => {});
-        });
-      }
-    </script>
+    <script type="module" src="/js/main.js"></script>
   </body>
 </html>

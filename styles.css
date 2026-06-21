@@ -1,0 +1,255 @@
+:root {
+  --fg: #39ff14;
+  --bg: #000000;
+  --duration: 8s; /* lower = faster scroll; driven by the speed slider */
+  --glow: 0; /* glow strength 0–1, used by the glow feature */
+  --flip: 1; /* 1 = normal, -1 = mirrored (scaleX) */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Fullscreen stage. 100dvh tracks the dynamic viewport so the background
+   fills the screen even as iOS toolbars show/hide. */
+#stage {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* The scrolling text. font-size floors at 20vw and grows to fill height,
+   so it stays readable at arm's length in portrait and landscape. The
+   font-size uses vw/vh which recompute on rotation; the scroll keyframe is
+   restarted from JS on rotate so its 100vw start position recomputes too. */
+#banner {
+  white-space: nowrap;
+  font-size: max(20vw, 62vh);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--fg);
+  will-change: transform;
+  padding-inline: 0.2em;
+  transform: scaleX(var(--flip));
+  text-shadow:
+    0 0 calc(var(--glow) * 0.12em) var(--fg),
+    0 0 calc(var(--glow) * 0.3em) var(--fg);
+  animation: scroll var(--duration) linear infinite;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(100vw) scaleX(var(--flip));
+  }
+  to {
+    transform: translateX(-100%) scaleX(var(--flip));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #banner {
+    animation-duration: calc(var(--duration) * 2.5);
+  }
+}
+
+/* Edit-mode controls layered over the live banner.
+   The panel is a scrolling flex container; the inner block uses margin:auto
+   so it centres when it fits but stays fully reachable (scrollable) when it
+   overflows — this avoids the justify-content:center clipping trap that hides
+   the top controls in landscape / with the keyboard open. */
+#panel {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: rgba(0, 0, 0, 0.86);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+#panel[hidden] {
+  display: none;
+}
+
+.panel-inner {
+  margin: auto;
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  padding: max(1.25rem, env(safe-area-inset-top)) 1.25rem
+    max(1.25rem, env(safe-area-inset-bottom));
+}
+
+/* Controls live in a responsive grid: one column in portrait, two in
+   landscape so the short viewport height does not force a long scroll. */
+#panel-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.1rem;
+}
+
+@media (orientation: landscape) {
+  .panel-inner {
+    max-width: 880px;
+  }
+  #panel-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.9rem 1.5rem;
+  }
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+label {
+  color: #aaa;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+input[type='text'] {
+  font-size: 1.4rem;
+  font-weight: 700;
+  padding: 0.7rem 0.9rem;
+  border: 2px solid #333;
+  border-radius: 0.6rem;
+  background: #111;
+  color: #fff;
+  width: 100%;
+}
+
+input[type='text']:focus {
+  outline: none;
+  border-color: var(--fg);
+}
+
+.colors {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+}
+
+.colors .row {
+  flex: 1;
+}
+
+input[type='color'] {
+  width: 100%;
+  height: 3rem;
+  border: 2px solid #333;
+  border-radius: 0.6rem;
+  background: #111;
+  cursor: pointer;
+}
+
+input[type='range'] {
+  width: 100%;
+  accent-color: var(--fg);
+}
+
+/* Segmented button groups (motion mode, direction, presets, etc). */
+.segment {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.segment button {
+  flex: 1 1 auto;
+  min-width: 4rem;
+  padding: 0.6rem 0.5rem;
+  border: 2px solid #333;
+  border-radius: 0.6rem;
+  background: #111;
+  color: #ccc;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.segment button[aria-pressed='true'] {
+  border-color: var(--fg);
+  background: #1c1c1c;
+  color: #fff;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.toggle button {
+  padding: 0.6rem 1rem;
+  border: 2px solid #333;
+  border-radius: 0.6rem;
+  background: #111;
+  color: #ccc;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.toggle button[aria-pressed='true'] {
+  border-color: var(--fg);
+  color: #fff;
+}
+
+#go {
+  margin-top: 0.5rem;
+  font-size: 1.3rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  padding: 1rem;
+  border: none;
+  border-radius: 0.6rem;
+  background: var(--fg);
+  color: #000;
+  cursor: pointer;
+}
+
+#go:focus-visible,
+.segment button:focus-visible,
+.toggle button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+.hint {
+  text-align: center;
+  color: #666;
+  font-size: 0.78rem;
+}
