@@ -45,10 +45,10 @@ These unlock later features and are the only unavoidable shared-file edits.
 - [ ] GIF / MOV export (needs a canvas; depends on dot-matrix) — L
 
 ## Audit follow-ups (fold into whichever wave touches the area)
-- [ ] Low-contrast fg/bg guard: compute WCAG ratio, show aria-live warning — P1
+- [x] Low-contrast fg/bg guard: compute WCAG ratio, show aria-live warning — P1
 - [ ] Panel reorg: presets above raw colour pickers; collapse glow/direction/
       mirror/blink under a "More / Effects" disclosure — P1/P2
-- [ ] Empty-text guard: disable GO (or show placeholder) when text is blank — P1
+- [x] Empty-text guard: disable GO (or show placeholder) when text is blank — P1
 - [ ] `aria-valuetext` on speed / glow / blink-rate sliders — P1
 - [ ] 44px min touch targets on segment/toggle buttons — P2
 - [ ] Scope `user-select:none` to stage/banner only (allow selecting panel text) — P2

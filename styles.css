@@ -292,6 +292,22 @@ input[type='range'] {
   color: #fff;
 }
 
+.warn {
+  text-align: center;
+  color: #ffd24a;
+  font-size: 0.82rem;
+  line-height: 1.3;
+}
+
+.warn[hidden] {
+  display: none;
+}
+
+#go:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 #go {
   margin-top: 0.5rem;
   font-size: 1.3rem;

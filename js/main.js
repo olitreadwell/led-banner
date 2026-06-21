@@ -9,7 +9,32 @@ const panel = document.getElementById('panel');
 const panelGrid = document.getElementById('panel-grid');
 const banner = document.getElementById('banner');
 const displayHint = document.getElementById('display-hint');
+const goButton = document.getElementById('go');
+const contrastWarn = document.getElementById('contrast-warn');
 const themeMeta = document.querySelector('meta[name="theme-color"]');
+
+// --- WCAG contrast helpers ---------------------------------------------------
+// Used to warn (not block) when the chosen text/background colours are too close
+// to read. The banner is large text, whose AA contrast floor is 3:1.
+function srgbToLinear(c) {
+  const v = c / 255;
+  return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+}
+function luminance(hex) {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex);
+  if (!m) return 0;
+  const n = parseInt(m[1], 16);
+  const r = srgbToLinear((n >> 16) & 255);
+  const g = srgbToLinear((n >> 8) & 255);
+  const b = srgbToLinear(n & 255);
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+function contrastRatio(fg, bg) {
+  const a = luminance(fg);
+  const b = luminance(bg);
+  const [hi, lo] = a >= b ? [a, b] : [b, a];
+  return (hi + 0.05) / (lo + 0.05);
+}
 const $ = (id) => document.getElementById(id);
 const STORE_KEY = 'led-banner-settings';
 
@@ -81,6 +106,22 @@ function applyAll() {
     `Banner: ${s.text?.trim() || 'blank'}. Activate to edit.`,
   );
   for (const f of features) f.render?.(s);
+
+  // Empty text would show a blank screen in display mode — disable GO instead.
+  const blank = !s.text.trim();
+  goButton.disabled = blank;
+
+  // Warn (don't block — it's a creative tool) on hard-to-read colour pairs.
+  const ratio = contrastRatio(s.fg, s.bg);
+  if (blank) {
+    contrastWarn.hidden = true;
+  } else if (ratio < 3) {
+    contrastWarn.hidden = false;
+    contrastWarn.textContent = `Low contrast (${ratio.toFixed(1)}:1) — the banner may be hard to read.`;
+  } else {
+    contrastWarn.hidden = true;
+  }
+
   save(s);
 }
 

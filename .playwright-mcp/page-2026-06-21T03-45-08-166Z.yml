@@ -1,0 +1,47 @@
+- generic [active] [ref=e1]:
+  - 'button "Banner: HELLO. Activate to edit." [ref=e2]':
+    - generic [ref=e3]: HELLO
+    - paragraph: Tap to edit
+  - dialog "Banner settings" [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - generic [ref=e8]: Banner text
+          - textbox "Banner text" [ref=e9]: HELLO
+        - generic [ref=e10]:
+          - generic [ref=e11]:
+            - generic [ref=e12]: Text
+            - textbox "Text" [ref=e13] [cursor=pointer]: "#ffffff"
+          - generic [ref=e14]:
+            - generic [ref=e15]: Background
+            - textbox "Background" [ref=e16] [cursor=pointer]: "#000000"
+        - generic [ref=e17]:
+          - generic [ref=e18]: Speed
+          - slider "Speed" [ref=e19]: "5"
+        - generic [ref=e20]:
+          - generic [ref=e21]: Presets
+          - generic [ref=e22]:
+            - button "Apply Night preset" [ref=e23] [cursor=pointer]: Night
+            - button "Apply Chalk preset" [ref=e24] [cursor=pointer]: Chalk
+            - button "Apply Club preset" [ref=e25] [cursor=pointer]: Club
+            - button "Apply Amber preset" [ref=e26] [cursor=pointer]: Amber
+            - button "Apply Ice preset" [ref=e27] [cursor=pointer]: Ice
+        - generic [ref=e28]:
+          - generic [ref=e29]: Glow
+          - slider "Glow" [ref=e30]: "3"
+        - generic [ref=e31]:
+          - generic [ref=e32]: Direction
+          - generic [ref=e33]:
+            - button "→ Right" [pressed] [ref=e34] [cursor=pointer]
+            - button "← Left" [ref=e35] [cursor=pointer]
+        - generic [ref=e37]:
+          - generic [ref=e38]: Mirror
+          - button "Mirror" [ref=e39] [cursor=pointer]: "Off"
+        - generic [ref=e41]:
+          - generic [ref=e42]: Blink
+          - button "Blink" [ref=e43] [cursor=pointer]: "Off"
+        - generic [ref=e44]:
+          - generic [ref=e45]: Blink rate
+          - slider "Blink rate" [ref=e46]: "5"
+      - button "GO FULLSCREEN ▶" [ref=e47] [cursor=pointer]
+      - paragraph [ref=e48]: Tap the screen anytime to come back here.
