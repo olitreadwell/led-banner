@@ -44,7 +44,7 @@ component where it fits; keep the iPhone-SE one-screen constraint in mind.
 
 ## Audit follow-ups (fold into whichever change touches the area)
 - [x] Better SR announcements on the stepper (group role + contextual aria-label) — P1
-- [ ] Pause/Play affordance for scroll/bounce (WCAG 2.2.2) — P2
+- [x] Pause/Play affordance for scroll/bounce (Pause switch; animation-play-state, WCAG 2.2.2) — P2
 - [x] Scope `user-select:none` to the stage only (panel text selectable) — P2
 
 ## Loop hygiene

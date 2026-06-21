@@ -204,6 +204,12 @@ body {
     blink var(--blink-rate, 0.5s) infinite;
 }
 
+/* Pause: freeze whatever animation the banner is running (after the motion
+   rules so it overrides their running play-state). */
+#banner[data-paused='on'] {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   #banner {
     animation-duration: calc(var(--duration) * 2.5);

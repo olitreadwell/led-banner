@@ -11,6 +11,7 @@ import brightness from './brightness.js';
 import blink from './blink.js';
 import dots from './dots.js';
 import direction from './direction.js';
+import pause from './pause.js';
 import autorotate from './autorotate.js';
 import mirror from './mirror.js';
 import slots from './slots.js';
@@ -26,6 +27,7 @@ export const features = [
   blink,
   dots,
   direction,
+  pause,
   autorotate,
   mirror,
   slots,
