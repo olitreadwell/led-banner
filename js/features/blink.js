@@ -32,7 +32,7 @@ export default {
     banner = ctx.banner;
 
     // Toggle: a .row > .toggle > (label span + button).
-    const toggleRow = ctx.addRow();
+    const toggleRow = ctx.addRow(null, { section: 'more' });
     const toggle = document.createElement('div');
     toggle.className = 'toggle';
 
@@ -56,7 +56,7 @@ export default {
     toggleRow.appendChild(toggle);
 
     // Rate slider (1–10, higher = faster).
-    const rateRow = ctx.addRow('Blink rate', { id: 'blink-rate' });
+    const rateRow = ctx.addRow('Blink rate', { id: 'blink-rate', section: 'more' });
     input = document.createElement('input');
     input.type = 'range';
     input.id = 'blink-rate';

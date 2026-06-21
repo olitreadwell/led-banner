@@ -13,7 +13,7 @@ export default {
 
   mount(ctx) {
     root = ctx.root;
-    const row = ctx.addRow('Glow', { id: 'glow' });
+    const row = ctx.addRow('Glow', { id: 'glow', section: 'more' });
     input = document.createElement('input');
     input.type = 'range';
     input.id = 'glow';

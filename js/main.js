@@ -57,8 +57,10 @@ const ctx = {
   panel,
   panelGrid,
   $,
-  // Append a labelled control row to the panel grid and return its container.
-  addRow(labelText, { id } = {}) {
+  // Append a labelled control row and return its container. Pass
+  // section: 'more' to place it in the collapsible "More effects" disclosure
+  // instead of the always-visible main grid.
+  addRow(labelText, { id, section } = {}) {
     const row = document.createElement('div');
     row.className = 'row';
     if (labelText) {
@@ -67,7 +69,11 @@ const ctx = {
       if (id) label.setAttribute('for', id);
       row.appendChild(label);
     }
-    panelGrid.appendChild(row);
+    const target =
+      section === 'more'
+        ? document.getElementById('more-grid')
+        : panelGrid;
+    target.appendChild(row);
     return row;
   },
   // Wire any control so changing it re-applies the whole banner live.

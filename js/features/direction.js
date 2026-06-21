@@ -25,7 +25,7 @@ export default {
 
   mount(ctx) {
     banner = ctx.banner;
-    const row = ctx.addRow('Direction');
+    const row = ctx.addRow('Direction', { section: 'more' });
     const segment = document.createElement('div');
     segment.className = 'segment';
     for (const { value, label } of OPTIONS) {

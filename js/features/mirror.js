@@ -18,7 +18,7 @@ export default {
 
   mount(ctx) {
     // Structure: a .row > .toggle > (label span + button).
-    const row = ctx.addRow();
+    const row = ctx.addRow(null, { section: 'more' });
     const toggle = document.createElement('div');
     toggle.className = 'toggle';
 

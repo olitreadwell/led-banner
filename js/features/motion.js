@@ -72,10 +72,17 @@ export default {
     row.appendChild(segment);
 
     // Re-fit static text when the viewport changes (core restarts the scroll
-    // animation separately; this covers the static path).
-    window.addEventListener('resize', fitStatic);
+    // animation separately; this covers the static path). Defer to two frames
+    // so the measurement runs after the post-rotation layout has settled —
+    // measuring too early was sizing the text to the pre-rotation dimensions.
+    let raf = 0;
+    const scheduleFit = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => requestAnimationFrame(fitStatic));
+    };
+    window.addEventListener('resize', scheduleFit);
     window.addEventListener('orientationchange', () =>
-      setTimeout(fitStatic, 300),
+      setTimeout(scheduleFit, 250),
     );
   },
 
