@@ -36,8 +36,8 @@ component where it fits; keep the iPhone-SE one-screen constraint in mind.
 - [x] Vertical scroll direction (Right/Left/Up/Down with arrow icons) — M
 - [x] Saved slots (3 slots in a Saved tab; save/recall full settings; core
       readAll/applySaved hook added)
-- [ ] Auto-fullscreen on rotate-to-landscape + portrait-display toggle — S,
-      core hook (expose enterDisplay/enterEdit on ctx)
+- [x] Auto-fullscreen on rotate-to-landscape + portrait-display toggle
+      ("Rotate" switch; landscape=display, portrait=edit; ctx.enterDisplay/Edit)
 - [ ] Dot-matrix LED render (mask-overlay variant first) — L
 - [ ] Export banner as video (canvas + MediaRecorder) — L
 

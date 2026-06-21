@@ -72,6 +72,10 @@ const ctx = {
   // Whole-settings read/restore, for features like saved slots.
   readAll: () => readControls(),
   applySaved: (obj) => applySaved(obj),
+  // Mode switches, for features like auto-rotate display.
+  enterDisplay: () => enterDisplay(),
+  enterEdit: () => enterEdit(),
+  isDisplaying: () => panel.hidden,
 };
 
 function baseSettings() {
