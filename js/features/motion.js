@@ -7,6 +7,7 @@
 const MODES = [
   { value: 'scroll', label: 'Scroll' },
   { value: 'static', label: 'Static' },
+  { value: 'bounce', label: 'Bounce' },
 ];
 
 let current = 'scroll';
@@ -93,10 +94,13 @@ export default {
   render(s) {
     if (s.motion === 'static') {
       banner.setAttribute('data-motion', 'static');
-      fitStatic();
+      fitStatic(); // sets the inline font-size to fill the screen
+    } else if (s.motion === 'bounce') {
+      banner.setAttribute('data-motion', 'bounce');
+      banner.style.fontSize = ''; // revert to the CSS max(20vw, 62vh)
     } else {
       banner.removeAttribute('data-motion');
-      banner.style.fontSize = ''; // revert to the CSS max(20vw, 62vh)
+      banner.style.fontSize = '';
     }
   },
 

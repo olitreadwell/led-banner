@@ -151,6 +151,27 @@ body {
   animation: blink var(--blink-rate, 0.5s) infinite;
 }
 
+/* Bounce: the text eases edge-to-edge and reverses, staying fully on screen.
+   translateX(calc(100vw - 100%)) right-aligns the text to the viewport. */
+@keyframes bounce {
+  from {
+    transform: translateX(0) scaleX(var(--flip));
+  }
+  to {
+    transform: translateX(calc(100vw - 100%)) scaleX(var(--flip));
+  }
+}
+
+#banner[data-motion='bounce'] {
+  animation: bounce var(--duration) ease-in-out infinite alternate;
+}
+
+#banner[data-motion='bounce'][data-blink='on'] {
+  animation:
+    bounce var(--duration) ease-in-out infinite alternate,
+    blink var(--blink-rate, 0.5s) infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   #banner {
     animation-duration: calc(var(--duration) * 2.5);
@@ -162,6 +183,9 @@ body {
   }
   #banner[data-motion='static'][data-blink='on'] {
     animation: none;
+  }
+  #banner[data-motion='bounce'] {
+    animation-duration: calc(var(--duration) * 2.5);
   }
 }
 

@@ -1,0 +1,38 @@
+- generic [active] [ref=e1]:
+  - 'button "Banner: hi. Activate to edit." [ref=e2]':
+    - generic [ref=e3]: hi
+    - paragraph: Tap to edit
+  - dialog "Banner settings" [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - generic [ref=e8]: Banner text
+          - textbox "Banner text" [ref=e9]: hi
+        - generic [ref=e10]:
+          - generic [ref=e11]:
+            - generic [ref=e12]: Text
+            - textbox "Text" [ref=e13] [cursor=pointer]: "#ff00d4"
+          - generic [ref=e14]:
+            - generic [ref=e15]: Background
+            - textbox "Background" [ref=e16] [cursor=pointer]: "#000000"
+        - generic [ref=e17]:
+          - generic [ref=e18]: Speed
+          - slider "Speed" [ref=e19]: "6"
+        - generic [ref=e20]:
+          - generic [ref=e21]: Presets
+          - generic [ref=e22]:
+            - button "Apply Night preset" [ref=e23] [cursor=pointer]: Night
+            - button "Apply Chalk preset" [ref=e24] [cursor=pointer]: Chalk
+            - button "Apply Club preset" [ref=e25] [cursor=pointer]: Club
+            - button "Apply Amber preset" [ref=e26] [cursor=pointer]: Amber
+            - button "Apply Ice preset" [ref=e27] [cursor=pointer]: Ice
+        - generic [ref=e28]:
+          - generic [ref=e29]: Motion
+          - generic [ref=e30]:
+            - button "Scroll" [pressed] [ref=e31] [cursor=pointer]
+            - button "Static" [ref=e32] [cursor=pointer]
+            - button "Bounce" [ref=e33] [cursor=pointer]
+      - group [ref=e34]:
+        - generic "More effects ▾" [ref=e35] [cursor=pointer]
+      - button "GO FULLSCREEN ▶" [ref=e36] [cursor=pointer]
+      - paragraph [ref=e37]: Tap the screen anytime to come back here.

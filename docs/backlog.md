@@ -29,7 +29,7 @@ ahead of it and must be preserved.
 ## Scratchpad parity — port these into modules (priority order)
 Reference: `~/code/scratchpad/public/led/index.html`. Each is a clean plugin
 unless noted; bump the SW cache + precache list every time.
-- [ ] Bounce motion mode (3rd segment; ping-pong scroll) — S, add to motion.js
+- [x] Bounce motion mode (3rd segment; ping-pong scroll) — S, add to motion.js
 - [ ] Multiple fonts (system stacks: condensed / serif / mono) + bold — M
 - [ ] Text size control (scale multiplier on the scroll font) — S
 - [ ] Brightness / dimmer (CSS filter on stage) — S
