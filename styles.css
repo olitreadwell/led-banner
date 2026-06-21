@@ -128,6 +128,29 @@ body {
   animation-direction: reverse, normal;
 }
 
+/* Static / hold mode: no scroll, centred, wraps to multiple lines. The font
+   size is set inline by the motion feature's auto-fit routine so the message
+   fills the screen in either orientation. */
+#banner[data-motion='static'] {
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  text-align: center;
+  width: 100%;
+  padding-inline: 0.4rem;
+  animation: none;
+  transform: scaleX(var(--flip));
+}
+
+#stage:has(#banner[data-motion='static']) {
+  justify-content: center;
+}
+
+/* Static + blink: flash in place, never scroll. */
+#banner[data-motion='static'][data-blink='on'] {
+  animation: blink var(--blink-rate, 0.5s) infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   #banner {
     animation-duration: calc(var(--duration) * 2.5);
@@ -136,6 +159,9 @@ body {
      (vestibular + photosensitive safety). */
   #banner[data-blink='on'] {
     animation: scroll calc(var(--duration) * 2.5) linear infinite;
+  }
+  #banner[data-motion='static'][data-blink='on'] {
+    animation: none;
   }
 }
 
@@ -267,6 +293,16 @@ input[type='range'] {
   border-color: var(--fg);
   background: #1c1c1c;
   color: #fff;
+}
+
+/* The mirror/blink toggle label is a bare <span>; style it like the other
+   uppercase labels so it stays legible on the dark panel. */
+.toggle > span {
+  color: #aaa;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .toggle {

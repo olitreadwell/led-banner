@@ -6,6 +6,14 @@ audit fixes, verify in a browser, commit, deploy to Vercel. Check items off as
 shipped. Keep features as one-file plugins under `js/features/` where possible;
 shared-file (core/CSS/HTML) edits are orchestrator-owned and serialised.
 
+## Direction (decided)
+Keep THIS repo's clean ES-module architecture. A far more featured but monolithic
+(1621-line) version exists at `~/code/scratchpad` `public/led/index.html`
+(scratchpad/main HEAD 9e55a6f, deployed to scratchpad-ashen.vercel.app/led). Use
+it as a REFERENCE IMPLEMENTATION to port missing features into clean modules —
+do not copy the monolith wholesale. Our orientation fix + a11y/safety work is
+ahead of it and must be preserved.
+
 ## Shipped
 - [x] Phase 0: modular split + orientation fix (landscape menu, rotate relayout)
 - [x] Mirror / horizontal flip
@@ -13,8 +21,25 @@ shared-file (core/CSS/HTML) edits are orchestrator-owned and serialised.
 - [x] Scroll direction (L/R)
 - [x] Blink (clamped <=2.5 Hz, off under reduced-motion)
 - [x] Colour presets (Night / Chalk / Club / Amber / Ice)
+- [x] Static motion mode (wraps + auto-fits to fill screen; height-based fit)
+- [x] Fix: mirror/blink toggle labels were dark-on-dark (unstyled span)
 - [x] a11y: zoom re-enabled, stage keyboard button + fading hint, focus-visible,
-      toggle aria-labels
+      toggle aria-labels, empty-text GO guard, low-contrast warning
+
+## Scratchpad parity — port these into modules (priority order)
+Reference: `~/code/scratchpad/public/led/index.html`. Each is a clean plugin
+unless noted; bump the SW cache + precache list every time.
+- [ ] Bounce motion mode (3rd segment; ping-pong scroll) — S, add to motion.js
+- [ ] Multiple fonts (system stacks: condensed / serif / mono) + bold — M
+- [ ] Text size control (scale multiplier on the scroll font) — S
+- [ ] Brightness / dimmer (CSS filter on stage) — S
+- [ ] Rainbow text / background / both (CSS-attribute-driven cycle) — M
+- [ ] Vertical scroll direction (up/down) — M, core/CSS
+- [ ] Saved slots (save/recall full settings; own storage key) — M, needs
+      a core applySaved/readAll hook
+- [ ] Dot-matrix LED render (mask-overlay variant first) — L
+- [ ] Export banner as video (canvas + MediaRecorder) — L
+- [ ] Rotate-to-fullscreen auto-display + portrait-display toggle — S, core hook
 
 ## Wave 0 — orchestrator core hooks (do before the parallel waves)
 These unlock later features and are the only unavoidable shared-file edits.

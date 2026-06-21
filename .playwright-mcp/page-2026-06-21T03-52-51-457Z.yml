@@ -1,0 +1,52 @@
+- generic [active] [ref=e1]:
+  - 'button "Banner: HELLO. Activate to edit." [ref=e2]':
+    - generic [ref=e3]: HELLO
+    - paragraph: Tap to edit
+  - dialog "Banner settings" [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - generic [ref=e8]: Banner text
+          - textbox "Banner text" [ref=e9]: HELLO
+        - generic [ref=e10]:
+          - generic [ref=e11]:
+            - generic [ref=e12]: Text
+            - textbox "Text" [ref=e13] [cursor=pointer]: "#ff00d4"
+          - generic [ref=e14]:
+            - generic [ref=e15]: Background
+            - textbox "Background" [ref=e16] [cursor=pointer]: "#000000"
+        - generic [ref=e17]:
+          - generic [ref=e18]: Speed
+          - slider "Speed" [ref=e19]: "1"
+        - generic [ref=e20]:
+          - generic [ref=e21]: Presets
+          - generic [ref=e22]:
+            - button "Apply Night preset" [ref=e23] [cursor=pointer]: Night
+            - button "Apply Chalk preset" [ref=e24] [cursor=pointer]: Chalk
+            - button "Apply Club preset" [ref=e25] [cursor=pointer]: Club
+            - button "Apply Amber preset" [ref=e26] [cursor=pointer]: Amber
+            - button "Apply Ice preset" [ref=e27] [cursor=pointer]: Ice
+        - generic [ref=e28]:
+          - generic [ref=e29]: Motion
+          - generic [ref=e30]:
+            - button "Scroll" [pressed] [ref=e31] [cursor=pointer]
+            - button "Static" [ref=e32] [cursor=pointer]
+        - generic [ref=e33]:
+          - generic [ref=e34]: Glow
+          - slider "Glow" [ref=e35]: "0"
+        - generic [ref=e36]:
+          - generic [ref=e37]: Direction
+          - generic [ref=e38]:
+            - button "→ Right" [pressed] [ref=e39] [cursor=pointer]
+            - button "← Left" [ref=e40] [cursor=pointer]
+        - generic [ref=e42]:
+          - generic [ref=e43]: Mirror
+          - button "Mirror" [ref=e44] [cursor=pointer]: "Off"
+        - generic [ref=e46]:
+          - generic [ref=e47]: Blink
+          - button "Blink" [ref=e48] [cursor=pointer]: "Off"
+        - generic [ref=e49]:
+          - generic [ref=e50]: Blink rate
+          - slider "Blink rate" [ref=e51]: "5"
+      - button "GO FULLSCREEN ▶" [ref=e52] [cursor=pointer]
+      - paragraph [ref=e53]: Tap the screen anytime to come back here.

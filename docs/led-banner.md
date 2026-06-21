@@ -19,7 +19,7 @@ step or framework — served straight from the repo root.
   `visibilitychange`. If the browser lacks the API it's a silent no-op.
 - The service worker (`/sw.js`, scope `/`) cache-firsts the app shell so it loads
   and runs offline.
-
+the 
 ### Hosting note
 
 The app is served from the domain root, so `start_url` and the service-worker
