@@ -3,4 +3,10 @@
 // Adding a feature = one import line + one array entry, so parallel work on
 // separate feature files merges cleanly. Order here is the order controls
 // appear in the panel.
-export const features = [];
+import presets from './presets.js';
+import glow from './glow.js';
+import direction from './direction.js';
+import mirror from './mirror.js';
+import blink from './blink.js';
+
+export const features = [presets, glow, direction, mirror, blink];

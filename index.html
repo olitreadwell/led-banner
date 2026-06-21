@@ -2,10 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <!-- viewport-fit=cover lets the background bleed under iOS notch/home-bar -->
+    <!-- viewport-fit=cover lets the background bleed under iOS notch/home-bar.
+         Zoom is left enabled (no maximum-scale/user-scalable) for accessibility;
+         #stage uses touch-action:manipulation to avoid accidental double-tap
+         zoom on the banner. -->
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <title>LED Banner</title>
     <meta
@@ -29,9 +32,17 @@
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <!-- Stage is always live; tapping it while in display mode reopens the panel. -->
-    <div id="stage">
-      <div id="banner">PLAY JUNGLE</div>
+    <!-- Stage is always live; tapping/activating it while in display mode
+         reopens the panel. It's a real button for keyboard + screen-reader
+         users (Enter/Space), and its aria-label carries the live message. -->
+    <div
+      id="stage"
+      role="button"
+      tabindex="0"
+      aria-label="Edit banner settings"
+    >
+      <div id="banner" aria-hidden="true">PLAY JUNGLE</div>
+      <p id="display-hint" aria-hidden="true">Tap to edit</p>
     </div>
 
     <div id="panel" role="dialog" aria-label="Banner settings">

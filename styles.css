@@ -39,6 +39,36 @@ body {
   display: flex;
   align-items: center;
   overflow: hidden;
+  touch-action: manipulation; /* no accidental double-tap zoom on the banner */
+}
+
+/* "Tap to edit" affordance shown briefly when entering display mode, so the
+   way back is discoverable (the panel's hint is hidden in display mode). It
+   fades out on its own and reappears on the next stray tap. */
+#display-hint {
+  position: absolute;
+  left: 50%;
+  bottom: max(1.5rem, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+#display-hint.show {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #display-hint {
+    transition: none;
+  }
 }
 
 /* The scrolling text. font-size floors at 20vw and grows to fill height,
@@ -101,6 +131,11 @@ body {
 @media (prefers-reduced-motion: reduce) {
   #banner {
     animation-duration: calc(var(--duration) * 2.5);
+  }
+  /* Never flash under reduced motion — overrides blink with a slow scroll only
+     (vestibular + photosensitive safety). */
+  #banner[data-blink='on'] {
+    animation: scroll calc(var(--duration) * 2.5) linear infinite;
   }
 }
 
@@ -272,7 +307,11 @@ input[type='range'] {
 
 #go:focus-visible,
 .segment button:focus-visible,
-.toggle button:focus-visible {
+.toggle button:focus-visible,
+#text:focus-visible,
+input[type='color']:focus-visible,
+input[type='range']:focus-visible,
+#stage:focus-visible {
   outline: 3px solid #fff;
   outline-offset: 2px;
 }

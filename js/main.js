@@ -8,6 +8,7 @@ const stage = document.getElementById('stage');
 const panel = document.getElementById('panel');
 const panelGrid = document.getElementById('panel-grid');
 const banner = document.getElementById('banner');
+const displayHint = document.getElementById('display-hint');
 const themeMeta = document.querySelector('meta[name="theme-color"]');
 const $ = (id) => document.getElementById(id);
 const STORE_KEY = 'led-banner-settings';
@@ -73,6 +74,12 @@ function applyAll() {
   root.style.setProperty('--bg', s.bg);
   root.style.setProperty('--duration', speedToDuration(s.speed));
   themeMeta.content = s.bg;
+  // The animated #banner is aria-hidden; expose the message on the stage button
+  // so screen readers announce it without reading the moving node.
+  stage.setAttribute(
+    'aria-label',
+    `Banner: ${s.text?.trim() || 'blank'}. Activate to edit.`,
+  );
   for (const f of features) f.render?.(s);
   save(s);
 }
@@ -114,14 +121,28 @@ document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible' && panel.hidden) requestWakeLock();
 });
 
+// Briefly show the "tap to edit" pill, then fade it out.
+let hintTimer;
+function flashHint() {
+  if (!displayHint) return;
+  displayHint.classList.add('show');
+  clearTimeout(hintTimer);
+  hintTimer = setTimeout(() => displayHint.classList.remove('show'), 2400);
+}
+
 function enterDisplay() {
   save(readControls());
   panel.hidden = true;
+  flashHint();
+  stage.focus();
   requestWakeLock();
 }
 
 function enterEdit() {
   panel.hidden = false;
+  displayHint?.classList.remove('show');
+  // Move focus into the panel so keyboard users aren't stranded on the stage.
+  $('text').focus();
   releaseWakeLock();
 }
 
@@ -153,8 +174,25 @@ window.addEventListener('orientationchange', () =>
   $(id).addEventListener('input', applyAll),
 );
 $('go').addEventListener('click', enterDisplay);
-stage.addEventListener('click', () => {
-  if (panel.hidden) enterEdit();
+// Tapping the stage in display mode reopens the panel; first stray tap just
+// re-flashes the hint so a passing touch doesn't yank a held-up banner away.
+let hintShownAt = 0;
+function activateStage() {
+  if (!panel.hidden) return;
+  const now = performance.now();
+  if (!displayHint.classList.contains('show') && now - hintShownAt > 2600) {
+    flashHint();
+    hintShownAt = now;
+    return;
+  }
+  enterEdit();
+}
+stage.addEventListener('click', activateStage);
+stage.addEventListener('keydown', (e) => {
+  if (panel.hidden && (e.key === 'Enter' || e.key === ' ')) {
+    e.preventDefault();
+    if (panel.hidden) enterEdit();
+  }
 });
 
 for (const f of features) f.mount?.(ctx);
