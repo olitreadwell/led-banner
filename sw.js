@@ -2,14 +2,14 @@
 // Cache-first so the app loads and runs with no network connection.
 // Bump CACHE on every asset change so returning users get fresh JS/CSS instead
 // of a stale cache-first copy (skipWaiting + clients.claim roll it out at once).
-const CACHE = 'led-banner-v7';
+const CACHE = 'led-banner-v8';
 const ASSETS = [
   '/',
   '/index.html',
   '/styles.css',
   '/js/main.js',
+  '/js/components.js',
   '/js/features/index.js',
-  '/js/features/presets.js',
   '/js/features/motion.js',
   '/js/features/glow.js',
   '/js/features/direction.js',

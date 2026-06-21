@@ -1,39 +1,45 @@
-// Neon glow strength. Drives the --glow CSS variable on the document root,
-// which the stylesheet feeds into #banner's text-shadow (0 = no glow). The
-// slider runs 0–10; the CSS multiplies that against em-based blur radii.
+// Neon glow strength as a segmented control: None / Low / Med / Max (0–3),
+// mapped to the --glow CSS variable the banner's text-shadow reads.
+const LEVELS = [
+  { value: '0', label: 'None' },
+  { value: '1', label: 'Low' },
+  { value: '2', label: 'Med' },
+  { value: '3', label: 'Max' },
+];
+const GLOW_MAP = [0, 2, 4.5, 8]; // level 0–3 → --glow value
 
-// Closure state: the range input (created in mount, reused by read/restore)
-// and the document root we set the --glow variable on.
-let input;
+let glow = 0;
+let el;
 let root;
 
 export default {
   id: 'glow',
-  defaults: { glow: 3 },
 
   mount(ctx) {
     root = ctx.root;
-    const row = ctx.addRow('Glow', { id: 'glow', section: 'more' });
-    input = document.createElement('input');
-    input.type = 'range';
-    input.id = 'glow';
-    input.min = '0';
-    input.max = '10';
-    input.step = '1';
-    input.value = '3';
-    row.appendChild(input);
-    ctx.onInput(input);
+    el = document.createElement('led-segmented');
+    el.label = 'Glow';
+    el.options = LEVELS;
+    el.value = String(glow);
+    el.addEventListener('change', (e) => {
+      glow = Number(e.detail.value);
+      ctx.requestApply();
+    });
+    ctx.add(el);
   },
 
   read(s) {
-    s.glow = input.value;
+    s.glow = glow;
   },
 
   render(s) {
-    root.style.setProperty('--glow', String(Number(s.glow)));
+    root.style.setProperty('--glow', String(GLOW_MAP[s.glow] ?? 0));
   },
 
   restore(saved) {
-    if (saved.glow != null) input.value = saved.glow;
+    if (saved.glow != null) {
+      glow = Math.min(3, Math.max(0, Number(saved.glow) || 0));
+      if (el) el.value = String(glow);
+    }
   },
 };

@@ -1,45 +1,22 @@
-// Mirror / horizontal flip. Toggles the `--flip` CSS variable on the document
-// root between 1 (normal) and -1 (mirrored). The banner's transform and scroll
-// keyframe already read `scaleX(var(--flip))`, so flipping the variable mirrors
-// the text live. Module-local state lives in a closure (no globals).
-let mirror = false; // current on/off state
-let button; // the toggle button, kept so render/restore can sync its UI
-
-// Reflect the current state onto the button (label text + aria-pressed).
-function syncButton() {
-  if (!button) return;
-  button.setAttribute('aria-pressed', String(mirror));
-  button.textContent = mirror ? 'On' : 'Off';
-}
+// Mirror / horizontal flip as an on/off switch. Toggles the --flip CSS variable
+// (1 normal, -1 mirrored), which the banner transform and keyframes read.
+let mirror = false;
+let root;
+let el;
 
 export default {
   id: 'mirror',
-  defaults: { mirror: false },
 
   mount(ctx) {
-    // Structure: a .row > .toggle > (label span + button).
-    const row = ctx.addRow(null, { section: 'more' });
-    const toggle = document.createElement('div');
-    toggle.className = 'toggle';
-
-    const label = document.createElement('span');
-    label.textContent = 'Mirror';
-
-    button = document.createElement('button');
-    button.type = 'button';
-    button.setAttribute('aria-label', 'Mirror'); // label span isn't associated
-    syncButton();
-
-    // Clicking flips state, updates the button UI, and re-applies the banner.
-    button.addEventListener('click', () => {
-      mirror = !mirror;
-      syncButton();
+    root = ctx.root;
+    el = document.createElement('led-switch');
+    el.label = 'Mirror';
+    el.checked = mirror;
+    el.addEventListener('change', (e) => {
+      mirror = e.detail.checked;
       ctx.requestApply();
     });
-
-    toggle.appendChild(label);
-    toggle.appendChild(button);
-    row.appendChild(toggle);
+    ctx.add(el);
   },
 
   read(s) {
@@ -47,13 +24,13 @@ export default {
   },
 
   render(s) {
-    document.documentElement.style.setProperty('--flip', s.mirror ? '-1' : '1');
+    root.style.setProperty('--flip', s.mirror ? '-1' : '1');
   },
 
   restore(saved) {
     if (saved.mirror != null) {
       mirror = Boolean(saved.mirror);
-      syncButton();
+      if (el) el.checked = mirror;
     }
   },
 };

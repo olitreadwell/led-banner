@@ -1,6 +1,9 @@
-// LED Banner — core. Owns the stage, the four base controls (text, fg, bg,
-// speed), persistence, wake lock, orientation handling, and a small feature
-// registry so optional features live in their own files under js/features/.
+// LED Banner — core. Owns the stage, the base controls (text, colour, speed),
+// motion resolution, persistence, wake lock, orientation handling, and a small
+// feature registry so optional controls live in their own files under
+// js/features/. Speed is a stepper: 0 = Static (held, auto-fit to the screen),
+// 1–10 = scroll/bounce speed.
+import './components.js';
 import { features } from './features/index.js';
 
 const root = document.documentElement;
@@ -12,10 +15,13 @@ const displayHint = document.getElementById('display-hint');
 const goButton = document.getElementById('go');
 const contrastWarn = document.getElementById('contrast-warn');
 const themeMeta = document.querySelector('meta[name="theme-color"]');
+const $ = (id) => document.getElementById(id);
+const STORE_KEY = 'led-banner-settings';
 
-// --- WCAG contrast helpers ---------------------------------------------------
-// Used to warn (not block) when the chosen text/background colours are too close
-// to read. The banner is large text, whose AA contrast floor is 3:1.
+// Speed (1–10) → animation duration. Higher speed = shorter duration = faster.
+const speedToDuration = (s) => `${22 / Number(s)}s`;
+
+// --- WCAG contrast helpers (warn, don't block, on hard-to-read colour pairs) -
 function srgbToLinear(c) {
   const v = c / 255;
   return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
@@ -35,21 +41,23 @@ function contrastRatio(fg, bg) {
   const [hi, lo] = a >= b ? [a, b] : [b, a];
   return (hi + 0.05) / (lo + 0.05);
 }
-const $ = (id) => document.getElementById(id);
-const STORE_KEY = 'led-banner-settings';
 
-// Speed slider (1–10) → animation duration. Higher speed = shorter duration =
-// faster scroll.
-const speedToDuration = (s) => `${22 / Number(s)}s`;
+// Speed is a core <led-stepper>, created here so the rest of the panel (the
+// features) mounts after it.
+const speedStepper = document.createElement('led-stepper');
+speedStepper.label = 'Speed';
+speedStepper.min = 0;
+speedStepper.max = 10;
+speedStepper.step = 1;
+speedStepper.zeroLabel = 'Static';
+speedStepper.value = 0;
+speedStepper.addEventListener('change', () => applyAll());
 
 // --- Feature plugin contract -------------------------------------------------
-// Each feature module default-exports:
-//   { id, defaults?, mount?(ctx), read?(settings), render?(settings),
-//     restore?(saved) }
-// mount: add controls to ctx.panelGrid and wire them with ctx.onInput.
-// read:  copy this feature's control values into the settings object.
-// render: apply settings to the DOM/CSS (runs on every change + on init).
-// restore: set control values from previously saved settings on load.
+// A feature default-exports { id, mount?(ctx), read?(settings), render?(settings),
+// restore?(saved) }. mount: append a control (usually a web component) via
+// ctx.add and wire its change event to ctx.requestApply. read: copy its value
+// into settings. render: apply settings to the DOM. restore: rehydrate on load.
 const ctx = {
   root,
   stage,
@@ -57,28 +65,9 @@ const ctx = {
   panel,
   panelGrid,
   $,
-  // Append a labelled control row and return its container. Pass
-  // section: 'more' to place it in the collapsible "More effects" disclosure
-  // instead of the always-visible main grid.
-  addRow(labelText, { id, section } = {}) {
-    const row = document.createElement('div');
-    row.className = 'row';
-    if (labelText) {
-      const label = document.createElement('label');
-      label.textContent = labelText;
-      if (id) label.setAttribute('for', id);
-      row.appendChild(label);
-    }
-    const target =
-      section === 'more'
-        ? document.getElementById('more-grid')
-        : panelGrid;
-    target.appendChild(row);
-    return row;
-  },
-  // Wire any control so changing it re-applies the whole banner live.
-  onInput(el, evt = 'input') {
-    el.addEventListener(evt, applyAll);
+  add(el) {
+    panelGrid.appendChild(el);
+    return el;
   },
   requestApply: () => applyAll(),
 };
@@ -88,7 +77,7 @@ function baseSettings() {
     text: $('text').value,
     fg: $('fg').value,
     bg: $('bg').value,
-    speed: $('speed').value,
+    speed: speedStepper.value,
   };
 }
 
@@ -98,12 +87,33 @@ function readControls() {
   return s;
 }
 
+// --- Static auto-fit ---------------------------------------------------------
+// Static mode (speed 0) holds the message, wrapped to multiple lines and sized
+// to fill the screen. The banner is full-width, so wrapping bounds the width;
+// we binary-search the largest font whose wrapped height fits the stage.
+function fitStatic() {
+  const text = banner.textContent.trim();
+  if (!text) {
+    banner.style.fontSize = '';
+    return;
+  }
+  const maxH = stage.clientHeight * 0.94;
+  let lo = 8;
+  let hi = Math.max(stage.clientHeight, stage.clientWidth);
+  for (let i = 0; i < 18; i++) {
+    const mid = (lo + hi) / 2;
+    banner.style.fontSize = `${mid}px`;
+    if (banner.scrollHeight <= maxH) lo = mid;
+    else hi = mid;
+  }
+  banner.style.fontSize = `${Math.floor(lo)}px`;
+}
+
 function applyAll() {
   const s = readControls();
   banner.textContent = s.text || ' ';
   root.style.setProperty('--fg', s.fg);
   root.style.setProperty('--bg', s.bg);
-  root.style.setProperty('--duration', speedToDuration(s.speed));
   themeMeta.content = s.bg;
   // The animated #banner is aria-hidden; expose the message on the stage button
   // so screen readers announce it without reading the moving node.
@@ -111,29 +121,37 @@ function applyAll() {
     'aria-label',
     `Banner: ${s.text?.trim() || 'blank'}. Activate to edit.`,
   );
+
+  // Motion resolution: speed 0 = static (hold + fit); otherwise scroll or
+  // bounce at the chosen speed (motion style comes from the motion feature).
+  if (Number(s.speed) === 0) {
+    banner.setAttribute('data-motion', 'static');
+    fitStatic();
+  } else {
+    banner.style.fontSize = ''; // revert to the CSS max(20vw, 62vh)
+    root.style.setProperty('--duration', speedToDuration(s.speed));
+    if (s.motionStyle === 'bounce') banner.setAttribute('data-motion', 'bounce');
+    else banner.removeAttribute('data-motion');
+  }
+
   for (const f of features) f.render?.(s);
 
   // Empty text would show a blank screen in display mode — disable GO instead.
   const blank = !s.text.trim();
   goButton.disabled = blank;
 
-  // Warn (don't block — it's a creative tool) on hard-to-read colour pairs.
   const ratio = contrastRatio(s.fg, s.bg);
-  if (blank) {
+  if (blank || ratio >= 3) {
     contrastWarn.hidden = true;
-  } else if (ratio < 3) {
+  } else {
     contrastWarn.hidden = false;
     contrastWarn.textContent = `Low contrast (${ratio.toFixed(1)}:1) — the banner may be hard to read.`;
-  } else {
-    contrastWarn.hidden = true;
   }
 
   save(s);
 }
 
 function save(settings) {
-  // Safari private mode throws on localStorage; settings still apply for the
-  // session.
   try {
     localStorage.setItem(STORE_KEY, JSON.stringify(settings));
   } catch {}
@@ -147,16 +165,13 @@ function load() {
   return null;
 }
 
-// --- Wake Lock: keep the screen awake in display mode, degrade silently on
-// browsers without the API. ---
+// --- Wake Lock: keep the screen awake in display mode, degrade silently. ---
 let wakeLock = null;
 async function requestWakeLock() {
-  if (!('wakeLock' in navigator)) return; // unsupported → no-op, no error
+  if (!('wakeLock' in navigator)) return;
   try {
     wakeLock = await navigator.wakeLock.request('screen');
-  } catch {
-    // e.g. tab not visible or permission denied — not user-facing.
-  }
+  } catch {}
 }
 async function releaseWakeLock() {
   try {
@@ -188,39 +203,40 @@ function enterDisplay() {
 function enterEdit() {
   panel.hidden = false;
   displayHint?.classList.remove('show');
-  // Move focus into the panel so keyboard users aren't stranded on the stage.
   $('text').focus();
   releaseWakeLock();
 }
 
 // --- Orientation handling ----------------------------------------------------
-// CSS animations cache the computed value of vw/vh units (e.g. the scroll
-// keyframe's translateX(100vw)) at the moment they start; rotating the device
-// does not recompute them, so the text can sit off-screen or jump. Restarting
-// the animation forces a recompute against the new viewport, which fixes the
-// "rotation doesn't lay out cleanly" problem. font-size (vw/vh) already
-// recomputes live, so the text auto-scales to the active orientation.
+// Restart the scroll/bounce animation so its vw-based keyframe recomputes after
+// a rotation, and re-fit static text to the new viewport. Both are deferred so
+// they measure the post-rotation layout.
 function restartAnimation() {
   banner.style.animation = 'none';
-  void banner.offsetWidth; // reflow so the next assignment restarts the anim
+  void banner.offsetWidth;
   banner.style.animation = '';
 }
-
-let resizeTimer;
+let raf = 0;
 function onViewportChange() {
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(restartAnimation, 150);
+  cancelAnimationFrame(raf);
+  raf = requestAnimationFrame(() =>
+    requestAnimationFrame(() => {
+      restartAnimation();
+      if (banner.getAttribute('data-motion') === 'static') fitStatic();
+    }),
+  );
 }
 window.addEventListener('resize', onViewportChange);
 window.addEventListener('orientationchange', () =>
-  setTimeout(restartAnimation, 300),
+  setTimeout(onViewportChange, 250),
 );
 
 // --- Wire core + mount features ---------------------------------------------
-['text', 'fg', 'bg', 'speed'].forEach((id) =>
+['text', 'fg', 'bg'].forEach((id) =>
   $(id).addEventListener('input', applyAll),
 );
 $('go').addEventListener('click', enterDisplay);
+
 // Tapping the stage in display mode reopens the panel; first stray tap just
 // re-flashes the hint so a passing touch doesn't yank a held-up banner away.
 let hintShownAt = 0;
@@ -238,10 +254,12 @@ stage.addEventListener('click', activateStage);
 stage.addEventListener('keydown', (e) => {
   if (panel.hidden && (e.key === 'Enter' || e.key === ' ')) {
     e.preventDefault();
-    if (panel.hidden) enterEdit();
+    enterEdit();
   }
 });
 
+// Insert the speed stepper right after the colour row, then mount features.
+panelGrid.appendChild(speedStepper);
 for (const f of features) f.mount?.(ctx);
 
 // Init from saved settings (falling back to the markup defaults).
@@ -250,7 +268,7 @@ if (saved) {
   if (saved.text != null) $('text').value = saved.text;
   if (saved.fg != null) $('fg').value = saved.fg;
   if (saved.bg != null) $('bg').value = saved.bg;
-  if (saved.speed != null) $('speed').value = saved.speed;
+  if (saved.speed != null) speedStepper.value = saved.speed;
   for (const f of features) f.restore?.(saved);
 }
 applyAll();

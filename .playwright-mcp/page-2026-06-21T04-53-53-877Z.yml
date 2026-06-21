@@ -1,0 +1,59 @@
+- generic [active] [ref=e1]:
+  - 'button "Banner: PLAY JUNGLE. Activate to edit." [ref=e2]':
+    - generic [ref=e3]: PLAY JUNGLE
+    - paragraph: Tap to edit
+  - dialog "Banner settings" [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - generic [ref=e8]: Text
+          - textbox "Text" [ref=e9]: PLAY JUNGLE
+        - generic [ref=e10]:
+          - generic [ref=e11]: Colour
+          - generic [ref=e12]:
+            - textbox "Text colour" [ref=e13] [cursor=pointer]: "#39ff14"
+            - textbox "Background colour" [ref=e14] [cursor=pointer]: "#000000"
+        - generic [ref=e16]:
+          - generic [ref=e17]: Speed
+          - generic [ref=e18]:
+            - button "Speed down" [disabled] [ref=e19]: −
+            - status [ref=e20]: Static
+            - button "Speed up" [ref=e21] [cursor=pointer]: +
+        - generic [ref=e23]:
+          - generic [ref=e24]: Motion
+          - radiogroup "Motion" [ref=e25]:
+            - radio "Scroll" [checked] [ref=e26] [cursor=pointer]:
+              - generic [ref=e27]: Scroll
+            - radio "Bounce" [ref=e28] [cursor=pointer]:
+              - generic [ref=e29]: Bounce
+        - generic [ref=e31]:
+          - generic [ref=e32]: Glow
+          - radiogroup "Glow" [ref=e33]:
+            - radio "None" [checked] [ref=e34] [cursor=pointer]:
+              - generic [ref=e35]: None
+            - radio "Low" [ref=e36] [cursor=pointer]:
+              - generic [ref=e37]: Low
+            - radio "Med" [ref=e38] [cursor=pointer]:
+              - generic [ref=e39]: Med
+            - radio "Max" [ref=e40] [cursor=pointer]:
+              - generic [ref=e41]: Max
+        - generic [ref=e43]:
+          - generic [ref=e44]: Blink
+          - generic [ref=e45]:
+            - button "Blink down" [disabled] [ref=e46]: −
+            - status [ref=e47]: "Off"
+            - button "Blink up" [ref=e48] [cursor=pointer]: +
+        - generic [ref=e50]:
+          - generic [ref=e51]: Direction
+          - radiogroup "Direction" [ref=e52]:
+            - radio "→ Right" [checked] [ref=e53] [cursor=pointer]:
+              - generic [ref=e54]: →
+              - generic [ref=e55]: Right
+            - radio "← Left" [ref=e56] [cursor=pointer]:
+              - generic [ref=e57]: ←
+              - generic [ref=e58]: Left
+        - generic [ref=e60]:
+          - generic [ref=e61]: Mirror
+          - switch "Mirror" [ref=e62] [cursor=pointer]
+      - button "GO FULLSCREEN ▶" [ref=e64] [cursor=pointer]
+      - paragraph [ref=e65]: Tap the screen anytime to come back here.
